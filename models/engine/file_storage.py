@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import json
 from models.base_model import BaseModel
+from datetime.datetime import fromisoformat
 """ File Storage Module """
 
 
@@ -56,8 +57,15 @@ class FileStorage:
 			with open(FileStorage.__file_path, "r") as file:
 				js_obj = json.load(file)
 				for obj in js_obj.values():
-					name_of_cls = obj["__class__"]
-					del obj["__class__"]
-					self.new(eval(name_of_cls)(**obj))
-		except :
+					name_of_cls = globals()[obj["__class__"]]
+					inst = name_of_cls.__new__(name_of_cls)
+					for k, v in obj.items():
+						if k == "__class__":
+							continue
+						elif k == "created_at" or k == "updated_at":
+							setattr(inst, k, fromisoformat(v))
+						else:
+							setattr(inst, k, v)
+					self.new(inst)
+		except (FileNotFoundError, FileExistsError):
 			pass
