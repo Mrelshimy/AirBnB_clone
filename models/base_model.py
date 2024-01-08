@@ -31,7 +31,7 @@ class BaseModel():
 
 	def save(self):
 		"""Update Updated_at to current datetime"""
-		storage.save(self)
+		storage.save()
 		return datetime.now()
 
 	def to_dict(self):

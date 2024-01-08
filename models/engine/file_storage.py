@@ -36,14 +36,16 @@ class FileStorage:
 		Args:
 			obj (object): Object to be added.
 		"""
-		FileStorage.__objects[obj.__class__.__name__.id] = obj
+		FileStorage.__objects[f"{obj.__class__.__name__}.{obj.id}"] = obj
 
 	def save(self):
 		"""
 		Saves all objects to the JSON file.
 		"""
 		with open(FileStorage.__file_path, "w") as file:
-			x = json.dump(FileStorage.__objects, file)
+			x = FileStorage.__objects
+			dic_of_objects = {obj: x[obj].to_dict() for obj in x.keys()}
+			json.dump(dic_of_objects, file)
 
 	def reload(self):
 		"""
