@@ -12,3 +12,4 @@ models/__pycache__/base_model.cpython-311.pyc
 models/engine/__pycache__/__init__.cpython-311.pyc
 models/engine/__pycache__/file_storage.cpython-311.pyc
 file.json
+.idea

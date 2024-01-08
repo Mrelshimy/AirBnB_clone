@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import json
+from models.base_model import BaseModel
 """ File Storage Module """
 
 
@@ -53,7 +54,10 @@ class FileStorage:
 		"""
 		try:
 			with open(FileStorage.__file_path, "r") as file:
-				x = json.load(file)
-				self.new(file)
-		except:
+				js_obj = json.load(file)
+				for obj in js_obj.values():
+					name_of_cls = obj["__class__"]
+					del obj["__class__"]
+					self.new(eval(name_of_cls)(**obj))
+		except :
 			pass
