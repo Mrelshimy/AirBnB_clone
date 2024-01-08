@@ -15,8 +15,8 @@ class TestBaseModemClass(unittest.TestCase):
 		self.model_2 = BaseModel()
 
 	def tearDown(self):
-		del(self.model_1)
-		del(self.model_2)
+		del self.model_1
+		del self.model_2
 
 	def test_instance(self):
 		"""Test Instance creation"""
