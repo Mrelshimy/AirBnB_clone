@@ -48,3 +48,7 @@ class TestBaseModemClass(unittest.TestCase):
         O_dict = self.model_1.to_dict()
         self.assertIsInstance(O_dict, dict)
         self.assertTrue(O_dict['__class__'], BaseModel)
+
+
+if __name__ == "__main__":
+    unittest.main()
