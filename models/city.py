@@ -17,7 +17,6 @@ class City(BaseModel):
     name = ""
     state_id = ""
 
-
     def __init__(self):
         """
         Constructor for the City class.
