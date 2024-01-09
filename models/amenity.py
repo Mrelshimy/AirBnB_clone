@@ -14,9 +14,3 @@ class Amenity(BaseModel):
     """
 
     name = ""
-
-    def __init__(self):
-        """
-        Constructor for the Amenity class.
-        """
-        pass

@@ -18,9 +18,3 @@ class Review(BaseModel):
     place_id = ""
     user_id = ""
     text = ""
-
-    def __init__(self):
-        """
-        Constructor for the Review class.
-        """
-        pass

@@ -14,12 +14,3 @@ class State(BaseModel):
     """
 
     name = ""
-
-    def __init__(self):
-        """
-        Constructor for the State class.
-
-        Parameters:
-            name (str, optional): The name of the state. Defaults to "".
-        """
-        pass
