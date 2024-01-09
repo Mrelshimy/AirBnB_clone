@@ -1,0 +1,15 @@
+# Default ignored files
+test_save_reload_base_model.py
+/shelf/
+/workspace.xml
+.idea/AirBnB_clone_demo.iml
+.idea/misc.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/inspectionProfiles/profiles_settings.xml
+models/__pycache__/__init__.cpython-311.pyc
+models/__pycache__/base_model.cpython-311.pyc
+models/engine/__pycache__/__init__.cpython-311.pyc
+models/engine/__pycache__/file_storage.cpython-311.pyc
+file.json
+.idea
