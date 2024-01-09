@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import json
 from models.base_model import BaseModel
-from datetime.datetime import fromisoformat
+import datetime
 """ File Storage Module """
 
 
@@ -63,7 +63,7 @@ class FileStorage:
 						if k == "__class__":
 							continue
 						elif k == "created_at" or k == "updated_at":
-							setattr(inst, k, fromisoformat(v))
+							setattr(inst, k, datetime.datetime.fromisoformat(v))
 						else:
 							setattr(inst, k, v)
 					self.new(inst)
