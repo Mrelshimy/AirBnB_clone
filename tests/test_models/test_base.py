@@ -6,7 +6,6 @@ from datetime import datetime
 from models.base_model import BaseModel
 
 
-
 class TestBaseModemClass(unittest.TestCase):
     """Testing BaseModem Class"""
 
@@ -36,14 +35,14 @@ class TestBaseModemClass(unittest.TestCase):
         self.assertEqual(type(self.model_1.created_at), datetime)
         self.assertTrue(hasattr(self.model_1, "created_at"))
         self.assertTrue(hasattr(self.model_2, "created_at"))
-    
+
     def test_update_at(self):
         """Test updated_at attribute"""
         self.assertTrue(hasattr(self.model_1, "updated_at"))
         self.model_1.save()
         self.assertEqual(type(self.model_1.updated_at), datetime)
         self.assertNotEqual(self.model_1.created_at, self.model_1.updated_at)
-    
+
     def test_to_dict(self):
         """Test to_dict method"""
         O_dict = self.model_1.to_dict()
