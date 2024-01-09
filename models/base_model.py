@@ -35,7 +35,7 @@ class BaseModel:
 
     def to_dict(self):
         """Return a Dictionary representation of an object"""
-        o_dict = self.__dict__
+        o_dict = self.__dict__.copy()
         o_dict['created_at'] = datetime.isoformat(self.created_at)
         o_dict['updated_at'] = datetime.isoformat(self.updated_at)
         o_dict['__class__'] = self.__class__.__name__
