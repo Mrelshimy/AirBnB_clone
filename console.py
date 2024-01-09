@@ -82,7 +82,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
 
     def do_all(self, args):
-        """Prints all string representation of all instances 
+        """Prints all string representation of all instances
         based or not on the class name"""
         clsmembers = dict(inspect.getmembers(sys.modules[__name__],
                                              inspect.isclass))
@@ -95,6 +95,36 @@ class HBNBCommand(cmd.Cmd):
         for obj in all_objs.values():
             all_objs_list.append(obj.__str__())
         print(all_objs_list)
+
+    def do_update(self, args):
+        """Update command to update an instance based on
+        the class name and id by adding or updating attribute"""
+        clsmembers = dict(inspect.getmembers(sys.modules[__name__],
+                                             inspect.isclass))
+        args_list = args.split()
+        if len(args_list) < 1:
+            print("** class name missing **")
+            return
+        elif len(args_list) < 2:
+            print("** instance id missing **")
+            return
+        elif args_list[0] not in clsmembers.keys():
+            print("** class doesn't exist **")
+        elif len(args_list) < 3:
+            print("** attribute name missing **")
+            return
+        elif len(args_list) < 4:
+            print("** value missing **")
+            return
+        else:
+            all_objs = storage.all()
+            get_obj = (f"{args_list[0]}.{args_list[1]}")
+            for key, value in all_objs.items():
+                if key == get_obj:
+                    setattr(value, args_list[2], args_list[3])
+                    storage.save()
+                    return
+            print("** no instance found **")
 
 
 if __name__ == "__main__":
