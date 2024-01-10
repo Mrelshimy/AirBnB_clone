@@ -21,22 +21,25 @@ class HBNBCommand(cmd.Cmd):
     def onecmd(self, line):
         """Parse input line to invoke function"""
         cmd, arg, line = self.parseline(line)
-        if cmd == 'quit' or cmd == 'EOF':
-            return True
-        if '.' in line:
-            if len(arg) < 36:
-                cmd = cmd + '.'
-                arg = arg[1:-2]
+        try:
+            if cmd == 'quit' or cmd == 'EOF':
+                return True
+            if '.' in line:
+                if len(arg) < 36:
+                    cmd = cmd + '.'
+                    arg = arg[1:-2]
+                else:
+                    cmd = cmd + " " + arg[-37:-1]
+                    arg = arg[1:-38]
+                getattr(self, 'do_' + arg)(cmd)
+                return
+            elif line == "":
+                self.emptyline()
             else:
-                cmd = cmd + " " + arg[-37:-1]
-                arg = arg[1:-38]
-            getattr(self, 'do_' + arg)(cmd)
-            return
-        elif line == "":
-            self.emptyline()
-        else:
-            getattr(self, 'do_' + cmd)(arg)
-            return
+                getattr(self, 'do_' + cmd)(arg)
+                return
+        except AttributeError:
+            print(f"*** Unknown syntax: {line}")
 
     def do_quit(self, arg):
         """ Quit console by typing 'quit' """
@@ -128,6 +131,26 @@ class HBNBCommand(cmd.Cmd):
             for obj in all_objs.values():
                 all_objs_list.append(obj.__str__())
             print(all_objs_list)
+
+    def do_count(self, args):
+        """Prints count of instances
+        of a class"""
+        clsmembers = dict(inspect.getmembers(sys.modules[__name__],
+                                             inspect.isclass))
+        all_objs = storage.all()
+        count = 0
+        if args:
+            if args[-1] == ".":
+                args = args[:-1]
+            if args not in clsmembers.keys():
+                print("** class doesn't exist **")
+                return
+            for obj in all_objs.values():
+                if args == obj.__class__.__name__:
+                    count += 1
+            print(count)
+        else:
+            print("** class name missing **")
 
     def do_update(self, args):
         """Update command to update an instance based on
