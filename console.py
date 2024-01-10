@@ -16,7 +16,7 @@ from models import storage
 class HBNBCommand(cmd.Cmd):
     """Console class"""
 
-    prompt = "(hbnb)"
+    prompt = "(hbnb) "
 
     def onecmd(self, line):
         """Parse input line to invoke function"""
