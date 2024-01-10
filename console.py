@@ -18,6 +18,22 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb)"
 
+    def onecmd(self, line):
+        """Parse input line to invoke function"""
+        cmd, arg, line = self.parseline(line)
+        if cmd == 'quit' or cmd == 'EOF':
+            return True
+        if '.' in line:
+            cmd = cmd + '.'
+            arg = arg[1:-2]
+            getattr(self, 'do_' + arg)(cmd)
+            return
+        elif line == "":
+            self.emptyline()
+        else:
+            getattr(self, 'do_' + cmd)(arg)
+            return
+
     def do_quit(self, arg):
         """ Quit console by typing 'quit' """
         return True
@@ -92,15 +108,22 @@ class HBNBCommand(cmd.Cmd):
         based or not on the class name"""
         clsmembers = dict(inspect.getmembers(sys.modules[__name__],
                                              inspect.isclass))
+        all_objs_list = []
+        all_objs = storage.all()
         if args:
-            if args not in clsmembers.keys():
+            if args not in clsmembers.keys() \
+               and args[:-1] not in clsmembers.keys():
                 print("** class doesn't exist **")
                 return
-        all_objs = storage.all()
-        all_objs_list = []
-        for obj in all_objs.values():
-            all_objs_list.append(obj.__str__())
-        print(all_objs_list)
+        if '.' in args:
+            for model, obj in all_objs.items():
+                if args in model:
+                    all_objs_list.append(obj.__str__())
+            print(all_objs_list)
+        else:
+            for obj in all_objs.values():
+                all_objs_list.append(obj.__str__())
+            print(all_objs_list)
 
     def do_update(self, args):
         """Update command to update an instance based on
