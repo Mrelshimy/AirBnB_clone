@@ -24,8 +24,12 @@ class HBNBCommand(cmd.Cmd):
         if cmd == 'quit' or cmd == 'EOF':
             return True
         if '.' in line:
-            cmd = cmd + '.'
-            arg = arg[1:-2]
+            if len(arg) < 36:
+                cmd = cmd + '.'
+                arg = arg[1:-2]
+            else:
+                cmd = cmd + " " + arg[-37:-1]
+                arg = arg[1:-38]
             getattr(self, 'do_' + arg)(cmd)
             return
         elif line == "":
@@ -134,11 +138,11 @@ class HBNBCommand(cmd.Cmd):
         if len(args_list) < 1:
             print("** class name missing **")
             return
+        elif args_list[0] not in clsmembers.keys():
+            print("** class doesn't exist **")
         elif len(args_list) < 2:
             print("** instance id missing **")
             return
-        elif args_list[0] not in clsmembers.keys():
-            print("** class doesn't exist **")
         elif len(args_list) < 3:
             print("** attribute name missing **")
             return
