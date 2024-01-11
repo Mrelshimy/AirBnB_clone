@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Console Module"""
 import cmd
 import sys
@@ -11,6 +10,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models import storage
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -18,28 +18,75 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
 
-    def onecmd(self, line):
-        """Parse input line to invoke function"""
-        cmd, arg, line = self.parseline(line)
-        try:
-            if cmd == 'quit' or cmd == 'EOF':
-                return True
-            if '.' in line:
-                if len(arg) < 36:
-                    cmd = cmd + '.'
-                    arg = arg[1:-2]
-                else:
-                    cmd = cmd + " " + arg[-37:-1]
-                    arg = arg[1:-38]
-                getattr(self, 'do_' + arg)(cmd)
-                return
-            elif line == "":
-                self.emptyline()
-            else:
-                getattr(self, 'do_' + cmd)(arg)
-                return
-        except AttributeError:
+    def default(self, line):
+        ln = line
+        command = ["all", "show", "count", "destroy", "update"]
+        classes = ["BaseModel", "User", "Amenity", "City", "Place", "Review", "State"]
+        ln = ln.strip()
+        first_dot = re.search(r"\.", ln)
+        clss = ln[:first_dot.span()[0]]
+        ln = ln[first_dot.span()[1]:]
+        open_paranthes = re.search(r"\(", ln)
+        if open_paranthes is None:
             print(f"*** Unknown syntax: {line}")
+            return
+        cmnd = ln[:open_paranthes.span()[0]]
+        ln = ln[open_paranthes.span()[1]:]
+        if clss == "" or cmnd not in command:
+            print(f"*** Unknown syntax: {line}")
+            return
+        if clss not in classes:
+            print("** class doesn't exist **")
+            return
+        if ln is None:
+            print(f"*** Unknown syntax: {line}")
+            return
+        close_paranthes = re.search(r"\)", ln)
+        if close_paranthes is None:
+            print(f"*** Unknown syntax: {line}")
+            return
+        ln = ln[:close_paranthes.span()[0]]
+        if cmnd == "all":
+            self.do_all(f"{clss}.")
+        elif cmnd == "count":
+            self.do_count(clss)
+        elif cmnd == "show":
+            if len(ln) < 3:
+                print("** instance id missing **")
+            self.do_show(f"{clss} {ln[1:-1]}")
+        elif cmnd == "destroy":
+            if len(ln) < 3:
+                print("** instance id missing **")
+            self.do_destroy(f"{clss} {ln[1:-1]}")
+        else:
+            argmts = ln.strip().split(",", 1)
+            argmts[0] = argmts[0].strip()
+            if len(argmts[0]) < 3:
+                print("** instance id missing **")
+                return
+            else:
+                argmts[0] = argmts[0][1:-1]
+            if len(argmts) == 1:
+                self.do_update(f"{clss} {argmts[0]}")
+                return
+            argmts[1] = argmts[1].strip()
+            if len(argmts) == 2 and argmts[1][0] == "{":
+                dc = re.match(r"\{(.*?)\}", argmts[1])[0]
+                argmts[1] = eval(dc)
+                print(argmts)
+                argmts.insert(0, clss)
+                self.do_update(argmts)
+                return
+            ls = argmts[1].split(",")
+            argmts.pop(1)
+            for ele in ls:
+                ele = ele.strip()
+                argmts.append(ele)
+            if len(argmts) == 2:
+                self.do_update(f"{clss} {argmts[0]} {argmts[1]}")
+                return
+            if len(argmts) >= 3:
+                self.do_update(f"{clss} {argmts[0]} {eval(argmts[1])} {eval(argmts[2])}")
 
     def do_quit(self, arg):
         """ Quit console by typing 'quit' """
@@ -82,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             all_objs = storage.all()
-            get_obj = (f"{args_list[0]}.{args_list[1]}")
+            get_obj = f"{args_list[0]}.{args_list[1]}"
             for key, value in all_objs.items():
                 if key == get_obj:
                     print(value)
@@ -155,17 +202,29 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, args):
         """Update command to update an instance based on
         the class name and id by adding or updating attribute"""
+        if type(args) is list:
+            dc = args[2]
+            all_objs = storage.all()
+            get_obj = f"{args[0]}.{args[1]}"
+            for key, value in all_objs.items():
+                if key == get_obj:
+                    for k, v in dc.items():
+                        setattr(value, k, v)
+                    storage.save()
+                    return
+            print("** no instance found **")
+            return
         clsmembers = dict(inspect.getmembers(sys.modules[__name__],
                                              inspect.isclass))
         args_list = args.split()
         if len(args_list) < 1:
             print("** class name missing **")
             return
-        elif args_list[0] not in clsmembers.keys():
-            print("** class doesn't exist **")
         elif len(args_list) < 2:
             print("** instance id missing **")
             return
+        elif args_list[0] not in clsmembers.keys():
+            print("** class doesn't exist **")
         elif len(args_list) < 3:
             print("** attribute name missing **")
             return
@@ -174,7 +233,7 @@ class HBNBCommand(cmd.Cmd):
             return
         else:
             all_objs = storage.all()
-            get_obj = (f"{args_list[0]}.{args_list[1]}")
+            get_obj = f"{args_list[0]}.{args_list[1]}"
             for key, value in all_objs.items():
                 if key == get_obj:
                     setattr(value, args_list[2], args_list[3])
