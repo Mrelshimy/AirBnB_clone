@@ -240,7 +240,7 @@ class HBNBCommand(cmd.Cmd):
                 attrValue = re.match(r'"(.*?)"', args_list[3])
                 attrValue = attrValue.group(1).strip()
             else:
-                attrValue = re.match(r'^(\w.\w+)', args_list[3])
+                attrValue = re.match(r'^(\w+(?:\.\w+)?)', args_list[3])
                 attrValue = attrValue.group(1)
             all_objs = storage.all()
             get_obj = (f"{args_list[0]}.{args_list[1]}")
