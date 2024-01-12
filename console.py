@@ -58,6 +58,7 @@ class HBNBCommand(cmd.Cmd):
             elif cmnd == "show":
                 if len(ln) < 3:
                     print("** instance id missing **")
+                    return
                 self.do_show(f"{clss} {ln[1:-1]}")
             elif cmnd == "destroy":
                 if len(ln) < 3:
@@ -246,7 +247,7 @@ class HBNBCommand(cmd.Cmd):
         clsmembers = dict(inspect.getmembers(sys.modules[__name__],
                                              inspect.isclass))
         args_list = args.split(" ", maxsplit=3)
-        if len(args_list) < 1:
+        if len(args_list) < 1 or args_list[0] == "":
             print("** class name missing **")
             return
         elif args_list[0] not in clsmembers.keys():
