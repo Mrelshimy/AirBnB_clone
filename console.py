@@ -14,6 +14,7 @@ from models import storage
 import re
 import sys
 
+
 class HBNBCommand(cmd.Cmd):
     """Console class"""
 

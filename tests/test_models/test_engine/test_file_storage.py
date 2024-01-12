@@ -10,6 +10,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.engine.file_storage import FileStorage
+import os
 
 
 class TestFileStorage(unittest.TestCase):
@@ -17,6 +18,7 @@ class TestFileStorage(unittest.TestCase):
 
     def setUp(self):
         self.s1 = FileStorage()
+
     def test_FileStorage_instantiation(self):
         self.assertIsInstance(self.s1, FileStorage)
         with self.assertRaises(TypeError):
@@ -90,6 +92,9 @@ class TestFileStorage(unittest.TestCase):
         self.assertIn("BaseModel." + bm.id, objs)
         with self.assertRaises(TypeError):
             models.storage.reload(None)
+
+    if os.path.exists("file.json"):
+        os.remove("file.json")
 
 
 if __name__ == "__main__":
