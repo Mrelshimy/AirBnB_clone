@@ -2,6 +2,7 @@
 """Testing File Storage Module"""
 import models
 import unittest
+import json
 from models.base_model import BaseModel
 from models.user import User
 from models.amenity import Amenity
@@ -18,6 +19,11 @@ class TestFileStorage(unittest.TestCase):
 
     def setUp(self):
         self.s1 = FileStorage()
+
+    def tearDown(self):
+        del self.s1
+        if os.path.exists("file.json"):
+            os.remove("file.json")
 
     def test_FileStorage_instantiation(self):
         self.assertIsInstance(self.s1, FileStorage)
@@ -72,29 +78,84 @@ class TestFileStorage(unittest.TestCase):
         with self.assertRaises(TypeError):
             models.storage.new(BaseModel(), 1)
 
+
     def test_storage_save_func(self):
-        bm = models.base_model.BaseModel()
+        bm = BaseModel()
+        us = User()
+        am = Amenity()
+        ci = City()
+        pl = Place()
+        rv = Review()
+        st = State()
         models.storage.new(bm)
+        models.storage.new(us)
+        models.storage.new(am)
+        models.storage.new(ci)
+        models.storage.new(pl)
+        models.storage.new(rv)
+        models.storage.new(st)
         models.storage.save()
-        save_text = ""
-        with open("file.json", "r") as f:
-            save_text = f.read()
-            self.assertIn("BaseModel." + bm.id, save_text)
+        self.assertTrue(os.path.exists('file.json'))
+        json_text = ""
+        with open("file.json", "r") as file:
+            json_text = file.read()
+            self.assertIn("BaseModel." + bm.id, json_text)
+            self.assertIn("User." + us.id, json_text)
+            self.assertIn("Amenity." + am.id, json_text)
+            self.assertIn("City." + ci.id, json_text)
+            self.assertIn("Place." + pl.id, json_text)
+            self.assertIn("Review." + rv.id, json_text)
+            self.assertIn("State." + st.id, json_text)
+
         with self.assertRaises(TypeError):
             models.storage.save(None)
+        if os.path.exists("file.json"):
+            os.remove("file.json")
 
     def test_storage_reload_func(self):
-        bm = models.base_model.BaseModel()
-        models.storage.new(bm)
+        bm = BaseModel()
+        us = User()
+        am = Amenity()
+        ci = City()
+        pl = Place()
+        rv = Review()
+        st = State()
+        self.s1.new(bm)
+        self.s1.new(us)
+        self.s1.new(am)
+        self.s1.new(ci)
+        self.s1.new(pl)
+        self.s1.new(rv)
+        self.s1.new(st)
         models.storage.save()
-        models.storage.reload()
-        objs = FileStorage()._FileStorage__objects
+        self.assertTrue(os.path.exists('file.json'))
+        self.s1.reload()
+        objs = self.s1._FileStorage__objects
         self.assertIn("BaseModel." + bm.id, objs)
+        self.assertIn("BaseModel." + bm.id, objs)
+        self.assertIn("User." + us.id, objs)
+        self.assertIn("Amenity." + am.id, objs)
+        self.assertIn("City." + ci.id, objs)
+        self.assertIn("Place." + pl.id, objs)
+        self.assertIn("Review." + rv.id, objs)
+        self.assertIn("State." + st.id, objs)
         with self.assertRaises(TypeError):
             models.storage.reload(None)
+        if os.path.exists("file.json"):
+            os.remove("file.json")
+        self.assertIsNone(models.storage.reload())
 
-    if os.path.exists("file.json"):
-        os.remove("file.json")
+    def test_json_file(self):
+        with open("file.json", "w") as file:
+            pass
+        with self.assertRaises(json.decoder.JSONDecodeError):
+            models.storage.reload()
+        with open("file.json", "w") as file:
+            file.write("{\"abcd\":\"12334\"}")
+        with self.assertRaises(TypeError):
+            models.storage.reload()
+        with open("file.json", "w") as file:
+            file.write("{}")
 
 
 if __name__ == "__main__":
