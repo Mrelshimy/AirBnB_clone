@@ -24,7 +24,8 @@ class HBNBCommand(cmd.Cmd):
         try:
             ln = line
             command = ["all", "show", "count", "destroy", "update"]
-            classes = ["BaseModel", "User", "Amenity", "City", "Place", "Review", "State"]
+            classes = ["BaseModel", "User", "Amenity",
+                       "City", "Place", "Review", "State"]
             ln = ln.strip()
             first_dot = re.search(r"\.", ln)
             clss = ln[:first_dot.span()[0]]
@@ -76,7 +77,6 @@ class HBNBCommand(cmd.Cmd):
                 if len(argmts) == 2 and argmts[1][0] == "{":
                     dc = re.match(r"\{(.*?)\}", argmts[1])[0]
                     argmts[1] = eval(dc)
-                    print(argmts)
                     argmts.insert(0, clss)
                     self.do_update(argmts)
                     return
@@ -92,7 +92,8 @@ class HBNBCommand(cmd.Cmd):
                     argmts[1] = eval(argmts[1])
                     if type(eval(argmts[2])) is not str:
                         argmts[2] = eval(argmts[2])
-                    self.do_update(f"{clss} {argmts[0]} {argmts[1]} {argmts[2]}")
+                    self.do_update(f"{clss} {argmts[0]} \
+{argmts[1]} {argmts[2]}")
         except AttributeError:
             print(f"*** Unknown syntax: {line}")
 
@@ -130,11 +131,12 @@ class HBNBCommand(cmd.Cmd):
         if len(args_list) < 1:
             print("** class name missing **")
             return
+        elif args_list[0] not in clsmembers.keys():
+            print("** class doesn't exist **")
+            return       
         elif len(args_list) < 2:
             print("** instance id missing **")
             return
-        elif args_list[0] not in clsmembers.keys():
-            print("** class doesn't exist **")
         else:
             all_objs = storage.all()
             get_obj = f"{args_list[0]}.{args_list[1]}"
@@ -152,11 +154,12 @@ class HBNBCommand(cmd.Cmd):
         if len(args_list) < 1:
             print("** class name missing **")
             return
+        elif args_list[0] not in clsmembers.keys():
+            print("** class doesn't exist **")
+            return
         elif len(args_list) < 2:
             print("** instance id missing **")
             return
-        elif args_list[0] not in clsmembers.keys():
-            print("** class doesn't exist **")
         else:
             all_objs = storage.all()
             try:
@@ -224,7 +227,6 @@ class HBNBCommand(cmd.Cmd):
             return
         clsmembers = dict(inspect.getmembers(sys.modules[__name__],
                                              inspect.isclass))
-        print(args)
         args_list = args.split(" ", maxsplit=3)
         if len(args_list) < 1:
             print("** class name missing **")
@@ -246,7 +248,7 @@ class HBNBCommand(cmd.Cmd):
                 attrValue = attrValue.group(1).strip()
             else:
                 attrValue = re.match(r'^(\w+(?:\.\w+)?)', args_list[3])
-                attrValue = attrValue.group(1)
+                attrValue = eval(attrValue.group(1))
             all_objs = storage.all()
             get_obj = (f"{args_list[0]}.{args_list[1]}")
             for key, value in all_objs.items():
@@ -255,7 +257,6 @@ class HBNBCommand(cmd.Cmd):
                     storage.save()
                     return
             print("** no instance found **")
-
 
 
 if __name__ == "__main__":
