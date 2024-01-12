@@ -17,6 +17,8 @@ class TestBaseModemClass(unittest.TestCase):
     def tearDown(self):
         del self.model_1
         del self.model_2
+        if os.path.exists("file.json"):
+            os.remove("file.json")
 
     def test_instance(self):
         """Test Instance creation"""
@@ -119,9 +121,6 @@ class TestBaseModemClass(unittest.TestCase):
         """Test amenity_ids attribute"""
         self.assertTrue(hasattr(self.model_1, "amenity_ids"))
         self.assertIsInstance(self.model_1.amenity_ids, list)
-
-    if os.path.exists("file.json"):
-        os.remove("file.json")
 
 
 if __name__ == "__main__":
