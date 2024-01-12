@@ -12,7 +12,7 @@ from models.review import Review
 from models.state import State
 from models import storage
 import re
-
+import sys
 
 class HBNBCommand(cmd.Cmd):
     """Console class"""
@@ -99,18 +99,25 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, arg):
         """ Quit console by typing 'quit' """
+        if not sys.stdin.isatty():
+            print()
         return True
 
     def do_EOF(self, arg):
         """End operation by typing EOF or Ctrl+d"""
+        if not sys.stdin.isatty():
+            print()
         return True
 
     def emptyline(self):
         """Empty line responce"""
-        pass
+        if not sys.stdin.isatty():
+            print()
 
     def do_create(self, ModelName):
         """Create a new instance command"""
+        if not sys.stdin.isatty():
+            print()
         clsmembers = dict(inspect.getmembers(sys.modules[__name__],
                                              inspect.isclass))
         if not ModelName:
@@ -125,6 +132,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, args):
         """Print the string representation of object based on the class name"""
+        if not sys.stdin.isatty():
+            print()
         clsmembers = dict(inspect.getmembers(sys.modules[__name__],
                                              inspect.isclass))
         args_list = args.split()
@@ -133,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
             return
         elif args_list[0] not in clsmembers.keys():
             print("** class doesn't exist **")
-            return       
+            return
         elif len(args_list) < 2:
             print("** instance id missing **")
             return
@@ -148,6 +157,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, args):
         """Destroy command to delete an object based on class and id"""
+        if not sys.stdin.isatty():
+            print()
         clsmembers = dict(inspect.getmembers(sys.modules[__name__],
                                              inspect.isclass))
         args_list = args.split()
@@ -171,6 +182,8 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """Prints all string representation of all instances
         based or not on the class name"""
+        if not sys.stdin.isatty():
+            print()
         clsmembers = dict(inspect.getmembers(sys.modules[__name__],
                                              inspect.isclass))
         all_objs_list = []
@@ -193,6 +206,8 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Prints count of instances
         of a class"""
+        if not sys.stdin.isatty():
+            print()
         clsmembers = dict(inspect.getmembers(sys.modules[__name__],
                                              inspect.isclass))
         all_objs = storage.all()
@@ -213,6 +228,8 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, args):
         """Update command to update an instance based on
         the class name and id by adding or updating attribute"""
+        if not sys.stdin.isatty():
+            print()
         if type(args) is list:
             dc = args[2]
             all_objs = storage.all()
@@ -257,6 +274,12 @@ class HBNBCommand(cmd.Cmd):
                     storage.save()
                     return
             print("** no instance found **")
+
+    def do_help(self, line):
+        """help command"""
+        if not sys.stdin.isatty():
+            print()
+        cmd.Cmd.do_help(self, line)
 
 
 if __name__ == "__main__":
