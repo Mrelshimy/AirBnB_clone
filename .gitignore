@@ -19,3 +19,5 @@ models/__pycache__/place.cpython-311.pyc
 models/__pycache__/review.cpython-311.pyc
 models/__pycache__/state.cpython-311.pyc
 models/__pycache__/user.cpython-311.pyc
+tests/test_models/__pycache__/test_base.cpython-311.pyc
+tests/test_models/test_engine/__pycache__/test_file_storage.cpython-311.pyc
