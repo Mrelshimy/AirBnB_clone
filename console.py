@@ -13,8 +13,6 @@ from models.state import State
 from models import storage
 import re
 import sys
-import os
-
 
 class HBNBCommand(cmd.Cmd):
     """Console class"""
@@ -23,8 +21,6 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, line):
         """ default console operation"""
-        if not sys.stdin.isatty():
-            print()
         try:
             ln = line
             command = ["all", "show", "count", "destroy", "update"]
