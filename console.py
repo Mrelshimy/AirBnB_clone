@@ -20,6 +20,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def default(self, line):
+        """ default console operation"""
         try:
             ln = line
             command = ["all", "show", "count", "destroy", "update"]
@@ -88,7 +89,10 @@ class HBNBCommand(cmd.Cmd):
                     self.do_update(f"{clss} {argmts[0]} {argmts[1]}")
                     return
                 if len(argmts) >= 3:
-                    self.do_update(f"{clss} {argmts[0]} {eval(argmts[1])} {eval(argmts[2])}")
+                    argmts[1] = eval(argmts[1])
+                    if type(eval(argmts[2])) is not str:
+                        argmts[2] = eval(argmts[2])
+                    self.do_update(f"{clss} {argmts[0]} {argmts[1]} {argmts[2]}")
         except AttributeError:
             print(f"*** Unknown syntax: {line}")
 
@@ -220,6 +224,7 @@ class HBNBCommand(cmd.Cmd):
             return
         clsmembers = dict(inspect.getmembers(sys.modules[__name__],
                                              inspect.isclass))
+        print(args)
         args_list = args.split(" ", maxsplit=3)
         if len(args_list) < 1:
             print("** class name missing **")
