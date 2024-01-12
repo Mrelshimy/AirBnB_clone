@@ -13,3 +13,9 @@ models/engine/__pycache__/__init__.cpython-311.pyc
 models/engine/__pycache__/file_storage.cpython-311.pyc
 file.json
 .idea
+models/__pycache__/amenity.cpython-311.pyc
+models/__pycache__/city.cpython-311.pyc
+models/__pycache__/place.cpython-311.pyc
+models/__pycache__/review.cpython-311.pyc
+models/__pycache__/state.cpython-311.pyc
+models/__pycache__/user.cpython-311.pyc
