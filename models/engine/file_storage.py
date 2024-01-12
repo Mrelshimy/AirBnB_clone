@@ -53,6 +53,8 @@ class FileStorage:
         """
         with open(FileStorage.__file_path, "w") as file:
             x = FileStorage.__objects
+            for obj in x.values():
+                obj.updated_at = datetime.now()
             dic_of_objects = {obj: x[obj].to_dict() for obj in x.keys()}
             json.dump(dic_of_objects, file)
 
