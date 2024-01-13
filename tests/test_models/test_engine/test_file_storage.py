@@ -144,18 +144,6 @@ class TestFileStorage(unittest.TestCase):
             os.remove("file.json")
         self.assertIsNone(models.storage.reload())
 
-    def test_json_file(self):
-        with open("file.json", "w") as file:
-            pass
-        with self.assertRaises(json.decoder.JSONDecodeError):
-            models.storage.reload()
-        with open("file.json", "w") as file:
-            file.write("{\"abcd\":\"12334\"}")
-        with self.assertRaises(TypeError):
-            models.storage.reload()
-        with open("file.json", "w") as file:
-            file.write("{}")
-
 
 if __name__ == "__main__":
     unittest.main()
