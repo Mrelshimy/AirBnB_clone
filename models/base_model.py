@@ -71,6 +71,7 @@ class BaseModel:
         Saves the current state of the instance to storage.
         """
         self.updated_at = datetime.datetime.now()
+        models.storage.new(self)
         models.storage.save()
 
     def to_dict(self):
