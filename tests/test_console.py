@@ -187,6 +187,86 @@ class TestConsole(unittest.TestCase):
             error_message = "** no instance found **"
             self.assertEqual(otpt.getvalue().strip(), error_message)
 
+    def test_all(self):
+        with patch("sys.stdout", new=StringIO()):
+            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
+            self.assertFalse(HBNBCommand().onecmd("create User"))
+            self.assertFalse(HBNBCommand().onecmd("create State"))
+            self.assertFalse(HBNBCommand().onecmd("create Place"))
+            self.assertFalse(HBNBCommand().onecmd("create City"))
+            self.assertFalse(HBNBCommand().onecmd("create Amenity"))
+            self.assertFalse(HBNBCommand().onecmd("create Review"))
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("all")
+            result = []
+            for v in storage.all().values():
+                result.append(v.__str__())
+            self.assertEqual(otpt.getvalue().strip(), f"{result}")
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("User.all()")
+            result = []
+            for model, obj in storage.all().items():
+                if "User" in model:
+                    result.append(obj.__str__())
+            self.assertEqual(otpt.getvalue().strip(), f"{result}")
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("City.all()")
+            result = []
+            for model, obj in storage.all().items():
+                if "City" in model:
+                    result.append(obj.__str__())
+            self.assertEqual(otpt.getvalue().strip(), f"{result}")
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("Review.all()")
+            result = []
+            for model, obj in storage.all().items():
+                if "Review" in model:
+                    result.append(obj.__str__())
+            self.assertEqual(otpt.getvalue().strip(), f"{result}")
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("Place.all()")
+            result = []
+            for model, obj in storage.all().items():
+                if "Place" in model:
+                    result.append(obj.__str__())
+            self.assertEqual(otpt.getvalue().strip(), f"{result}")
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("State.all()")
+            result = []
+            for model, obj in storage.all().items():
+                if "State" in model:
+                    result.append(obj.__str__())
+            self.assertEqual(otpt.getvalue().strip(), f"{result}")
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("Amenity.all()")
+            result = []
+            for model, obj in storage.all().items():
+                if "Amenity" in model:
+                    result.append(obj.__str__())
+            self.assertEqual(otpt.getvalue().strip(), f"{result}")
+
+    def test_all_errors(self):
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("abcd.all()")
+            error = "** class doesn't exist **"
+            self.assertEqual(otpt.getvalue().strip(), error)
+
+    def test_count(self):
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("User.count()")
+            self.assertEqual(otpt.getvalue().strip(), "1")
+        with patch("sys.stdout", new=StringIO()):
+            self.assertFalse(HBNBCommand().onecmd("create User"))
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("User.count()")
+            self.assertEqual(otpt.getvalue().strip(), "2")
+
+    def test_count_errors(self):
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("abcd.count()")
+            error = "** class doesn't exist **"
+            self.assertEqual(otpt.getvalue().strip(), error)
+
 
 if __name__ == "__main__":
     unittest.main()
