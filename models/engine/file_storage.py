@@ -69,4 +69,4 @@ class FileStorage:
                             setattr(ob, k, v)
                     self.new(ob)
         except Exception:
-            pass
+            return
