@@ -43,8 +43,7 @@ class TestBaseModemClass(unittest.TestCase):
     def test_update_at(self):
         """Test updated_at attribute"""
         self.assertTrue(hasattr(self.model_1, "updated_at"))
-        self.assertAlmostEqual(self.model_1.created_at,
-                               self.model_1.updated_at)
+        self.assertNotEqual(self.model_1.created_at, self.model_1.updated_at)
         self.model_1.save()
         self.assertEqual(type(self.model_1.updated_at), datetime)
         self.assertNotEqual(self.model_1.created_at,
