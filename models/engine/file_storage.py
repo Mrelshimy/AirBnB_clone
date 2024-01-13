@@ -54,7 +54,6 @@ class FileStorage:
         """
         Reloads objects from the JSON file.
         """
-        try:
             with open(FileStorage.__file_path, "r") as file:
                 js_obj = json.load(file)
                 for obj in js_obj.values():
@@ -68,5 +67,3 @@ class FileStorage:
                         else:
                             setattr(ob, k, v)
                     self.new(ob)
-        except FileNotFoundError:
-            pass
