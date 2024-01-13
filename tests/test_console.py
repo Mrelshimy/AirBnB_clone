@@ -187,5 +187,6 @@ class TestConsole(unittest.TestCase):
             error_message = "** no instance found **"
             self.assertEqual(otpt.getvalue().strip(), error_message)
 
+
 if __name__ == "__main__":
     unittest.main()
