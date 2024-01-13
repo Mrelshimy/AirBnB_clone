@@ -68,5 +68,5 @@ class FileStorage:
                         else:
                             setattr(ob, k, v)
                     self.new(ob)
-        except FileNotFoundError:
-            return
+        except Exception:
+            pass
