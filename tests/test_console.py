@@ -267,6 +267,116 @@ class TestConsole(unittest.TestCase):
             error = "** class doesn't exist **"
             self.assertEqual(otpt.getvalue().strip(), error)
 
+    def test_update(self):
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("create BaseModel")
+            bs_id = otpt.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()):
+            HBNBCommand().onecmd(f"update BaseModel "
+                                 f"{bs_id} fname \"mohamed\"")
+
+            self.assertTrue(hasattr(storage.all()[f"BaseModel.{bs_id}"],
+                                    "fname"))
+            self.assertIsInstance(storage.all()[f"BaseModel.{bs_id}"].fname,
+                                  str)
+            self.assertEqual(storage.all()[f"BaseModel.{bs_id}"].fname,
+                             "mohamed")
+            HBNBCommand().onecmd(f"update BaseModel "
+                                 f"{bs_id} sname \"nour eldean\"")
+
+            self.assertTrue(hasattr(storage.all()[f"BaseModel.{bs_id}"],
+                                    "sname"))
+            self.assertIsInstance(storage.all()[f"BaseModel.{bs_id}"].sname,
+                                  str)
+            self.assertEqual(storage.all()[f"BaseModel.{bs_id}"].sname,
+                             "nour eldean")
+            HBNBCommand().onecmd(f"update BaseModel "
+                                 f"{bs_id} age 30")
+            self.assertTrue(hasattr(storage.all()[f"BaseModel.{bs_id}"],
+                                    "age"))
+            self.assertIsInstance(storage.all()[f"BaseModel.{bs_id}"].age,
+                                  int)
+            self.assertEqual(storage.all()[f"BaseModel.{bs_id}"].age,
+                             30)
+            HBNBCommand().onecmd(f"update BaseModel "
+                                 f"{bs_id} height 1.79")
+            self.assertTrue(hasattr(storage.all()[f"BaseModel.{bs_id}"],
+                                    "height"))
+            self.assertIsInstance(storage.all()[f"BaseModel.{bs_id}"].height,
+                                  float)
+            self.assertEqual(storage.all()[f"BaseModel.{bs_id}"].height,
+                             1.79)
+            HBNBCommand().onecmd(f"BaseModel.destroy({bs_id})")
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("create BaseModel")
+            bs_id = otpt.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()):
+            HBNBCommand().onecmd(f"BaseModel.update(\"{bs_id}\", \"fname\","
+                                 f" \"mohamed\")")
+            self.assertTrue(hasattr(storage.all()[f"BaseModel.{bs_id}"],
+                                    "fname"))
+            self.assertIsInstance(storage.all()[f"BaseModel.{bs_id}"].fname,
+                                  str)
+            self.assertEqual(storage.all()[f"BaseModel.{bs_id}"].fname,
+                             "mohamed")
+            HBNBCommand().onecmd(f"BaseModel.update(\"{bs_id}\", \"sname\","
+                                 f" \"nour eldean\")")
+            self.assertTrue(hasattr(storage.all()[f"BaseModel.{bs_id}"],
+                                    "sname"))
+            self.assertIsInstance(storage.all()[f"BaseModel.{bs_id}"].sname,
+                                  str)
+            self.assertEqual(storage.all()[f"BaseModel.{bs_id}"].sname,
+                             "nour eldean")
+            HBNBCommand().onecmd(f"BaseModel.update(\"{bs_id}\", \"age\","
+                                 f" 30)")
+            self.assertTrue(hasattr(storage.all()[f"BaseModel.{bs_id}"],
+                                    "age"))
+            self.assertIsInstance(storage.all()[f"BaseModel.{bs_id}"].age,
+                                  int)
+            self.assertEqual(storage.all()[f"BaseModel.{bs_id}"].age,
+                             30)
+            HBNBCommand().onecmd(f"BaseModel.update(\"{bs_id}\", \"height\","
+                                 f" 1.79)")
+            self.assertTrue(hasattr(storage.all()[f"BaseModel.{bs_id}"],
+                                    "height"))
+            self.assertIsInstance(storage.all()[f"BaseModel.{bs_id}"].height,
+                                  float)
+            self.assertEqual(storage.all()[f"BaseModel.{bs_id}"].height,
+                             1.79)
+            HBNBCommand().onecmd(f"BaseModel.destroy({bs_id})")
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("create BaseModel")
+            bs_id = otpt.getvalue().strip()
+        with patch("sys.stdout", new=StringIO()):
+            dic_obj = {"fname": "mohamed", "sname": "nour eldean",
+                       "age": 30, "height": 1.79}
+            HBNBCommand().onecmd(f"BaseModel.update(\"{bs_id}\", {dic_obj})")
+            self.assertTrue(hasattr(storage.all()[f"BaseModel.{bs_id}"],
+                                    "fname"))
+            self.assertIsInstance(storage.all()[f"BaseModel.{bs_id}"].fname,
+                                  str)
+            self.assertEqual(storage.all()[f"BaseModel.{bs_id}"].fname,
+                             "mohamed")
+            self.assertTrue(hasattr(storage.all()[f"BaseModel.{bs_id}"],
+                                    "sname"))
+            self.assertIsInstance(storage.all()[f"BaseModel.{bs_id}"].sname,
+                                  str)
+            self.assertEqual(storage.all()[f"BaseModel.{bs_id}"].sname,
+                             "nour eldean")
+            self.assertTrue(hasattr(storage.all()[f"BaseModel.{bs_id}"],
+                                    "age"))
+            self.assertIsInstance(storage.all()[f"BaseModel.{bs_id}"].age,
+                                  int)
+            self.assertEqual(storage.all()[f"BaseModel.{bs_id}"].age,
+                             30)
+            self.assertTrue(hasattr(storage.all()[f"BaseModel.{bs_id}"],
+                                    "height"))
+            self.assertIsInstance(storage.all()[f"BaseModel.{bs_id}"].height,
+                                  float)
+            self.assertEqual(storage.all()[f"BaseModel.{bs_id}"].height,
+                             1.79)
+            HBNBCommand().onecmd(f"BaseModel.destroy({bs_id})")
+
 
 if __name__ == "__main__":
     unittest.main()
