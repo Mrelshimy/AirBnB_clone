@@ -4,6 +4,7 @@ import unittest
 import uuid
 from datetime import datetime
 from models.base_model import BaseModel
+from time import sleep
 import os
 
 
@@ -45,6 +46,7 @@ class TestBaseModemClass(unittest.TestCase):
         self.assertTrue(hasattr(self.model_1, "updated_at"))
         self.assertAlmostEqual(self.model_1.created_at,
                                self.model_1.updated_at)
+        sleep(0.5)
         self.model_1.save()
         self.assertEqual(type(self.model_1.updated_at), datetime)
         self.assertNotEqual(self.model_1.created_at,
