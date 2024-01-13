@@ -126,18 +126,66 @@ class TestConsole(unittest.TestCase):
             HBNBCommand().onecmd(".User(\"1234\")")
             error_message = "*** Unknown syntax: .User(\"1234\")"
             self.assertEqual(otpt.getvalue().strip(), error_message)
-        # with patch("sys.stdout", new=StringIO()) as otpt:
-        #     HBNBCommand().onecmd("show abcd")
-        #     error_message = "** class doesn't exist **"
-        #     self.assertEqual(otpt.getvalue().strip(), error_message)
-        # with patch("sys.stdout", new=StringIO()) as otpt:
-        #     HBNBCommand().onecmd("show User")
-        #     error_message = "** instance id missing **"
-        #     self.assertEqual(otpt.getvalue().strip(), error_message)
-        # with patch("sys.stdout", new=StringIO()) as otpt:
-        #     HBNBCommand().onecmd("show User 12434")
-        #     error_message = "** no instance found **"
-        #     self.assertEqual(otpt.getvalue().strip(), error_message)
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("abcd.show(1234)")
+            error_message = "** class doesn't exist **"
+            self.assertEqual(otpt.getvalue().strip(), error_message)
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("User.show()")
+            error_message = "** instance id missing **"
+            self.assertEqual(otpt.getvalue().strip(), error_message)
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("User.show(\"1234\")")
+            error_message = "** no instance found **"
+            self.assertEqual(otpt.getvalue().strip(), error_message)
+
+    def test_destroy(self):
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("create BaseModel")
+            class_id = f"{otpt.getvalue().strip()}"
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd(f"destroy BaseModel {class_id}")
+            self.assertNotIn(f"BaseModel.{class_id}", storage.all().keys())
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("create BaseModel")
+            class_id = f"{otpt.getvalue().strip()}"
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd(f"BaseModel.destroy(\"{class_id}\")")
+            self.assertNotIn(f"BaseModel.{class_id}", storage.all().keys())
+
+    def test_destroy_errors(self):
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("destroy ")
+            error_message = "** class name missing **"
+            self.assertEqual(otpt.getvalue().strip(), error_message)
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("destroy abcd")
+            error_message = "** class doesn't exist **"
+            self.assertEqual(otpt.getvalue().strip(), error_message)
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("destroy User")
+            error_message = "** instance id missing **"
+            self.assertEqual(otpt.getvalue().strip(), error_message)
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("destroy User 12434")
+            error_message = "** no instance found **"
+            self.assertEqual(otpt.getvalue().strip(), error_message)
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd(".User(\"1234\")")
+            error_message = "*** Unknown syntax: .User(\"1234\")"
+            self.assertEqual(otpt.getvalue().strip(), error_message)
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("abcd.destroy(1234)")
+            error_message = "** class doesn't exist **"
+            self.assertEqual(otpt.getvalue().strip(), error_message)
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("User.destroy()")
+            error_message = "** instance id missing **"
+            self.assertEqual(otpt.getvalue().strip(), error_message)
+        with patch("sys.stdout", new=StringIO()) as otpt:
+            HBNBCommand().onecmd("User.destroy(\"1234\")")
+            error_message = "** no instance found **"
+            self.assertEqual(otpt.getvalue().strip(), error_message)
 
 if __name__ == "__main__":
     unittest.main()
