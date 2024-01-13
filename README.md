@@ -5,8 +5,8 @@ AirBnB clone is the first phase of creating a complete web application cloning t
 
 ### Project Description
 This pojects involves handling the backend of the web application by:
-1- Creating the main objects inclusing all the attributes and methods
-2- Creating a command line interpreter that can handle and manage all objects operations                                              
+* Creating the main objects including all the attributes and methods
+* Creating a command line interpreter that can handle and manage all objects operations                                              
 ### CLI Description
 
 * How to start :
