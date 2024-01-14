@@ -4,7 +4,6 @@ import unittest
 import uuid
 from datetime import datetime
 from models.base_model import BaseModel
-from time import sleep
 import os
 from time import sleep
 
