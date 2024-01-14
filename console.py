@@ -63,6 +63,7 @@ class HBNBCommand(cmd.Cmd):
             elif cmnd == "destroy":
                 if len(ln) < 3:
                     print("** instance id missing **")
+                    return
                 self.do_destroy(f"{clss} {ln[1:-1]}")
             else:
                 argmts = ln.strip().split(",", 1)

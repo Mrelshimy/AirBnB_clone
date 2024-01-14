@@ -5,6 +5,7 @@ import uuid
 from datetime import datetime
 from models.user import User
 import os
+from time import sleep
 
 
 class TestBaseModemClass(unittest.TestCase):
@@ -43,9 +44,10 @@ class TestBaseModemClass(unittest.TestCase):
     def test_update_at(self):
         """Test updated_at attribute"""
         self.assertTrue(hasattr(self.model_1, "updated_at"))
-        self.assertAlmostEqual(self.model_1.created_at,
-                               self.model_1.updated_at)
+        old_date = self.model_1.updated_at
+        sleep(0.05)
         self.model_1.save()
+        self.assertLess(old_date, self.model_1.updated_at)
         self.assertEqual(type(self.model_1.updated_at), datetime)
         self.assertNotEqual(self.model_1.created_at,
                             self.model_1.updated_at)

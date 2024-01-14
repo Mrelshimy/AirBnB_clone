@@ -78,7 +78,6 @@ class TestFileStorage(unittest.TestCase):
         with self.assertRaises(TypeError):
             models.storage.new(BaseModel(), 1)
 
-
     def test_storage_save_func(self):
         bm = BaseModel()
         us = User()

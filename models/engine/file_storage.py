@@ -23,12 +23,6 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def __init__(self):
-        """
-        Constructs a new FileStorage object.
-        """
-        pass
-
     def all(self):
         """
         Returns all stored objects.
@@ -52,9 +46,7 @@ class FileStorage:
         Saves all objects to the JSON file.
         """
         with open(FileStorage.__file_path, "w") as file:
-            x = FileStorage.__objects
-            for obj in x.values():
-                obj.updated_at = datetime.datetime.now()
+            x = FileStorage.__objects.copy()
             dic_of_objects = {obj: x[obj].to_dict() for obj in x.keys()}
             json.dump(dic_of_objects, file)
 
@@ -77,4 +69,4 @@ class FileStorage:
                             setattr(ob, k, v)
                     self.new(ob)
         except FileNotFoundError:
-            pass
+            return
