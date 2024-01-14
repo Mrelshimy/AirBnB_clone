@@ -58,5 +58,5 @@ This pojects involves handling the backend of the web application by:
 ```
 ### Contributers 👷
 
-* Nour Eldean Mohamed <nour98nour@gmail.com>
-* Mohamed Raafat <mraafat.elsayed@gmail.com>
+* Nour Eldean Mohamed <nour98nour@gmail.com> , <https://github.com/nour-nono>
+* Mohamed Raafat <mraafat.elsayed@gmail.com> , <https://github.com/Mrelshimy>
