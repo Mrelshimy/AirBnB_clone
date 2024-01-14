@@ -57,16 +57,8 @@ class FileStorage:
         try:
             with open(FileStorage.__file_path, "r") as file:
                 js_obj = json.load(file)
-                for obj in js_obj.values():
+                for k, obj in js_obj.items():
                     name_of_cls = globals()[obj["__class__"]]
-                    ob = name_of_cls.__new__(name_of_cls)
-                    for k, v in obj.items():
-                        if k == "__class__":
-                            continue
-                        elif k == "created_at" or k == "updated_at":
-                            setattr(ob, k, datetime.datetime.fromisoformat(v))
-                        else:
-                            setattr(ob, k, v)
-                    self.new(ob)
+                    FileStorage.__objects[k] = name_of_cls(**obj)
         except FileNotFoundError:
             return
