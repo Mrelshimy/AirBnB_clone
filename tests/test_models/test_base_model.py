@@ -42,8 +42,10 @@ class TestBaseModemClass(unittest.TestCase):
         self.assertTrue(hasattr(self.model_2, "created_at"))
         old = self.model_1.created_at
         sleep(0.05)
+        b = BaseModel()
         self.model_1.save()
         self.assertEqual(old, self.model_1.created_at)
+        self.assertNotEqual(b.created_at, self.model_1.created_at)
 
     def test_update_at(self):
         """Test updated_at attribute"""
