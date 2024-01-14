@@ -5,6 +5,7 @@ import uuid
 from datetime import datetime
 from models.state import State
 import os
+from time import sleep
 
 
 class TestBaseModemClass(unittest.TestCase):
@@ -39,14 +40,23 @@ class TestBaseModemClass(unittest.TestCase):
         self.assertIsInstance(self.model_1.created_at, datetime)
         self.assertTrue(hasattr(self.model_1, "created_at"))
         self.assertTrue(hasattr(self.model_2, "created_at"))
+        old = self.model_1.created_at
+        sleep(0.05)
+        b = State()
+        self.model_1.save()
+        self.assertEqual(old, self.model_1.created_at)
+        self.assertNotEqual(b.created_at, self.model_1.created_at)
 
     def test_update_at(self):
         """Test updated_at attribute"""
         self.assertTrue(hasattr(self.model_1, "updated_at"))
+        old = self.model_1.updated_at
+        sleep(0.05)
         self.model_1.save()
         self.assertEqual(type(self.model_1.updated_at), datetime)
-        self.assertNotEqual(self.model_1.created_at,
-                            self.model_1.updated_at)
+        self.assertLess(self.model_1.created_at,
+                        self.model_1.updated_at)
+        self.assertLess(old, self.model_1.updated_at)
 
     def test_to_dict(self):
         """Test to_dict method"""
