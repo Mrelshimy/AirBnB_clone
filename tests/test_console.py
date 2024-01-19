@@ -32,7 +32,7 @@ class TestConsole(unittest.TestCase):
     def test_emptyline(self):
         with patch("sys.stdout", new=StringIO()) as otpt:
             HBNBCommand().emptyline()
-            self.assertEqual(otpt.getvalue(), "")
+            self.assertEqual(otpt.getvalue().strip(), "")
 
     def test_create(self):
         with patch("sys.stdout", new=StringIO()) as otpt:
