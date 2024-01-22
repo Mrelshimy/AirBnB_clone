@@ -5,6 +5,12 @@ header {
     border-bottom: 1px solid #CCCCCC;
 }
 
+header::before {
+    content:"";
+    display: block;
+    height: 6px;
+}
+
 header::after{
     content: url(../images/logo.png);
     margin-left: 20px;

@@ -1,12 +1,12 @@
 .places {
     text-align: center;
+}
 
-    h1 {
-        font-size: 30px;
-        margin: auto;
-        padding-top: 2%;
-        text-align: left;
-    }
+.places h1 {
+    font-size: 30px;
+    margin: auto;
+    padding-top: 2%;
+    text-align: left;
 }
 
 article {
@@ -17,9 +17,9 @@ article {
     border-radius: 4px;
     display: inline-block;
     text-align: center;
+}
 
-    h2 {
-        font-size: 30px;
-        margin: auto;
-    }
+article  h2 {
+    font-size: 30px;
+    margin: auto;
 }
